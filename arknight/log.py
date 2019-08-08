@@ -5,9 +5,9 @@ Created on 2018年9月28日
 '''
 
 import logging
-logger = logging.getLogger('ark order helper')
+logger = logging.getLogger('ark night helper')
 logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler('ArkOrderHelper.log')
+fh = logging.FileHandler('ArkNightHelper.log')
 fh.setLevel(logging.INFO)
 ch = logging.StreamHandler()
 ch.setLevel(logging.INFO)
