@@ -50,23 +50,25 @@ d = u2.connect()
 
 
 def touchStartMissionA():
-    touch(startMissionA_x, startMissionA_y);
+    touch(startMissionA_x, startMissionA_y)
 
 
 def touchStartMissionB():
-    touch(startMissionB_x, startMissionB_y);
+    touch(startMissionB_x, startMissionB_y)
 
 
 def touchFightEnd():
-    touch(1000, 1000);
+    # wait all fight rewards show up
+    wait(2)
+    touch(1000, 1000)
 
 
 def touchRefillIntellect():
-    touch(refillIntellect_x, refillIntellect_y);
+    touch(refillIntellect_x, refillIntellect_y)
 
 
 def touchRefillIntellectConfirm():
-    touch(refillIntellectConfirm_x, refillIntellectConfirm_y);
+    touch(refillIntellectConfirm_x, refillIntellectConfirm_y)
 
 
 def waitUntilSelectMission():
@@ -83,7 +85,7 @@ def waitFightEnd():
 
 def waitSelectTeamOrRefillIntellect():
     return waitTemplate(templateStartMissionB, 'Entered to select team or refill intellect interface',
-                        templateNoIntellectSymbol, 'team', 'intellect')
+                        template2=templateNoIntellectSymbol, template1Return='team', template2Return='intellect')
 
 
 '''
@@ -96,38 +98,40 @@ def handleBadConnectionPopin(pilImg):
         touch(badConnection_x, badConnection_y)
 '''
 
+
 def waitTemplate(template, log, delay=1, precition=0.925, template2=None, template1Return=None, template2Return=None):
     l.debug('In waitTemplateThenTouch')
     found = False
-    tmpt = 0;
-    
-    while (not found):
-        img = capture()
-        
+    tmpt = 0
+
+    while not found:
+        imgCapt = capture()
+
         # template1
-        res = cv2.matchTemplate(pilToCv2(img), template, cv2.TM_CCOEFF_NORMED)
-        if cv2.minMaxLoc(res)[1] > precition :  # check again in 1s
+        res = cv2.matchTemplate(pilToCv2(imgCapt), template, cv2.TM_CCOEFF_NORMED)
+        l.info(cv2.minMaxLoc(res)[1])
+        if cv2.minMaxLoc(res)[1] > precition:  # check again in 1s
             wait(1)
-            img = capture()
-            res = cv2.matchTemplate(pilToCv2(img), template, cv2.TM_CCOEFF_NORMED)
+            imgCapt = capture()
+            res = cv2.matchTemplate(pilToCv2(imgCapt), template, cv2.TM_CCOEFF_NORMED)
             found = cv2.minMaxLoc(res)[1] > precition
             tmpt = 1
         wait(delay)
-        
+
         # template2
-        if template2 != None:
-            res = cv2.matchTemplate(pilToCv2(img), template2, cv2.TM_CCOEFF_NORMED)
-            if cv2.minMaxLoc(res)[1] > precition :  # check again in 1s
+        if template2 is not None:
+            res = cv2.matchTemplate(pilToCv2(imgCapt), template2, cv2.TM_CCOEFF_NORMED)
+            if cv2.minMaxLoc(res)[1] > precition:  # check again in 1s
                 wait(1)
-                img = capture()
-                res = cv2.matchTemplate(pilToCv2(img), template2, cv2.TM_CCOEFF_NORMED)
+                imgCapt = capture()
+                res = cv2.matchTemplate(pilToCv2(imgCapt), template2, cv2.TM_CCOEFF_NORMED)
                 found = cv2.minMaxLoc(res)[1] > precition
                 tmpt = 2
             wait(delay)
-    
+
     l.info(log)
-    
-    if template1Return != None and template2Return != None:
+
+    if template1Return is not None and template2Return is not None:
         if tmpt == 1:
             return template1Return
         else:
@@ -151,13 +155,12 @@ def wait(sec):
 def touch(x, y):
     x += random.randrange(-10, 10)
     y += random.randrange(-10, 10)
-    d.touch(x, y)
-    
-    
+    d.click(x, y)
+
+
 def pilToCv2(pilImg):
     return cv2.cvtColor(numpy.array(pilImg), cv2.COLOR_RGB2BGR)
-    
+
 
 if __name__ == '__main__':
     img = capture('tmp.jpg')
-    

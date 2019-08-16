@@ -1,8 +1,8 @@
-'''
+"""
 Created on 2018年9月28日
 
 @author: NathanKun
-'''
+"""
 
 '''
 等待 开始行动按钮
@@ -20,6 +20,8 @@ Created on 2018年9月28日
         按坐标 中央
     等待 开始行动按钮
 '''
+
+
 def main():
     # check in mission selection interface
     h.waitUntilSelectMission()
@@ -36,16 +38,17 @@ def main():
             h.touchFightEnd()
         h.waitUntilSelectMission()
 
+
 if __name__ == '__main__':
     from log import logger as l
-    
+
     l.info("Starting...")
     import helper as h
-    
+
     l.info("Started")
-    
+
     main()
-    
+
     l.info("Stop")
     l.info("-------------------")
     l.info("-------------------")
