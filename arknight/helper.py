@@ -12,6 +12,7 @@ import cv2
 # import atx # uiautomator1
 # pip3 install --pre -U uiautomator2
 # install atx-agent on phone: python -m uiautomator2 init
+import requests
 import uiautomator2 as u2
 # from PIL import Image
 
@@ -109,7 +110,6 @@ def waitTemplate(template, log, delay=1, precition=0.925, template2=None, templa
 
         # template1
         res = cv2.matchTemplate(pilToCv2(imgCapt), template, cv2.TM_CCOEFF_NORMED)
-        l.info(cv2.minMaxLoc(res)[1])
         if cv2.minMaxLoc(res)[1] > precition:  # check again in 1s
             wait(1)
             imgCapt = capture()
@@ -145,7 +145,14 @@ def capture(savepath=None):
     Returns:
         PIL.Image object
     """
-    return d.screenshot(savepath)
+    global d
+    try:
+        return d.screenshot(savepath)
+    except requests.exceptions.ConnectionError:
+        l.info("ConnectionError, try again in 5 sec")
+        wait(5)
+        d = u2.connect()
+        return capture(savepath)
 
 
 def wait(sec):
