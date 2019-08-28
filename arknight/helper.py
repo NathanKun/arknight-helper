@@ -23,6 +23,7 @@ Templates
 """
 # templateBadConnection = cv2.imread('templates/bad_connection.jpg')
 templateStartMissionA = cv2.imread('templates/mission_select_interface_start_button.jpg')
+templateStartMissionA_EVENT = cv2.imread('templates/mission_select_interface_start_button_event.jpg')
 templateStartMissionB = cv2.imread('templates/team_select_interface_start_button.jpg')
 templateFightingSymbol = cv2.imread('templates/fighting_symbol.jpg')
 templateFightEnd = cv2.imread('templates/fight_end_symbol.jpg')
@@ -47,7 +48,17 @@ refillIntellect_y = 160
 refillIntellectConfirm_x = 2340
 refillIntellectConfirm_y = 1160
 
-d = u2.connect()
+WIFI_IP = '192.168.1.20';
+
+def connect():
+    global d
+    try:
+        d = u2.connect(WIFI_IP)
+    except u2.adbutils.errors.AdbError:
+        d = u2.connect()
+
+
+connect()
 
 
 def touchStartMissionA():
@@ -73,7 +84,7 @@ def touchRefillIntellectConfirm():
 
 
 def waitUntilSelectMission():
-    waitTemplate(templateStartMissionA, 'Entered to select mission interface')
+    waitTemplate(templateStartMissionA, 'Entered to select mission interface', template2=templateStartMissionA_EVENT)
 
 
 def waitFightStart():
@@ -151,7 +162,7 @@ def capture(savepath=None):
     except requests.exceptions.ConnectionError:
         l.info("ConnectionError, try again in 5 sec")
         wait(5)
-        d = u2.connect()
+        connect()
         return capture(savepath)
 
 
