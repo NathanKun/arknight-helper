@@ -44,6 +44,7 @@ if __name__ == '__main__':
 
     l.info("Starting...")
     import helper as h
+    h.connect()
 
     l.info("Started")
 

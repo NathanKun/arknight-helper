@@ -58,9 +58,6 @@ def connect():
         d = u2.connect()
 
 
-connect()
-
-
 def touchStartMissionA():
     touch(startMissionA_x, startMissionA_y)
 
