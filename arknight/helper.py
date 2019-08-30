@@ -113,10 +113,9 @@ def handleBadConnectionPopin(pilImg):
 
 def waitTemplate(template, log, delay=1, precition=0.925, template2=None, template1Return=None, template2Return=None):
     l.debug('In waitTemplateThenTouch')
-    found = False
     tmpt = 0
 
-    while not found:
+    while True:
         imgCapt = capture()
 
         # template1
@@ -125,9 +124,9 @@ def waitTemplate(template, log, delay=1, precition=0.925, template2=None, templa
             wait(1)
             imgCapt = capture()
             res = cv2.matchTemplate(pilToCv2(imgCapt), template, cv2.TM_CCOEFF_NORMED)
-            found = cv2.minMaxLoc(res)[1] > precition
-            tmpt = 1
-        wait(delay)
+            if cv2.minMaxLoc(res)[1] > precition:
+                tmpt = 1
+                break
 
         # template2
         if template2 is not None:
@@ -136,9 +135,11 @@ def waitTemplate(template, log, delay=1, precition=0.925, template2=None, templa
                 wait(1)
                 imgCapt = capture()
                 res = cv2.matchTemplate(pilToCv2(imgCapt), template2, cv2.TM_CCOEFF_NORMED)
-                found = cv2.minMaxLoc(res)[1] > precition
-                tmpt = 2
-            wait(delay)
+                if cv2.minMaxLoc(res)[1] > precition:
+                    tmpt = 2
+                    break
+
+        wait(delay)
 
     l.info(log)
 
