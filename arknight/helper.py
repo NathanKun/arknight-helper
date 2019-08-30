@@ -101,9 +101,9 @@ def waitSelectTeamOrRefillIntellect():
 
 
 '''
-def handleBadConnectionPopin(pilImg):
+def handleBadConnectionPopin(cvImg):
     l.debug('In handleBadConnectionPopin')
-    res = cv2.matchTemplate(pilToCv2(pilImg), templateBadConnection, cv2.TM_CCOEFF_NORMED)
+    res = cv2.matchTemplate(cvImg, templateBadConnection, cv2.TM_CCOEFF_NORMED)
     
     if cv2.minMaxLoc(res)[1] > 0.925:
         l.info('Bad Connection')
@@ -111,7 +111,7 @@ def handleBadConnectionPopin(pilImg):
 '''
 
 
-def waitTemplate(template, log, delay=1, precition=0.925, template2=None, template1Return=None, template2Return=None):
+def waitTemplate(template, log, delay=0.5, precition=0.925, template2=None, template1Return=None, template2Return=None):
     l.debug('In waitTemplateThenTouch')
     tmpt = 0
 
@@ -119,22 +119,20 @@ def waitTemplate(template, log, delay=1, precition=0.925, template2=None, templa
         imgCapt = capture()
 
         # template1
-        res = cv2.matchTemplate(pilToCv2(imgCapt), template, cv2.TM_CCOEFF_NORMED)
-        if cv2.minMaxLoc(res)[1] > precition:  # check again in 1s
-            wait(1)
+        res = cv2.matchTemplate(imgCapt, template, cv2.TM_CCOEFF_NORMED)
+        if cv2.minMaxLoc(res)[1] > precition:  # check again
             imgCapt = capture()
-            res = cv2.matchTemplate(pilToCv2(imgCapt), template, cv2.TM_CCOEFF_NORMED)
+            res = cv2.matchTemplate(imgCapt, template, cv2.TM_CCOEFF_NORMED)
             if cv2.minMaxLoc(res)[1] > precition:
                 tmpt = 1
                 break
 
         # template2
         if template2 is not None:
-            res = cv2.matchTemplate(pilToCv2(imgCapt), template2, cv2.TM_CCOEFF_NORMED)
-            if cv2.minMaxLoc(res)[1] > precition:  # check again in 1s
-                wait(1)
+            res = cv2.matchTemplate(imgCapt, template2, cv2.TM_CCOEFF_NORMED)
+            if cv2.minMaxLoc(res)[1] > precition:  # check again
                 imgCapt = capture()
-                res = cv2.matchTemplate(pilToCv2(imgCapt), template2, cv2.TM_CCOEFF_NORMED)
+                res = cv2.matchTemplate(imgCapt, template2, cv2.TM_CCOEFF_NORMED)
                 if cv2.minMaxLoc(res)[1] > precition:
                     tmpt = 2
                     break
@@ -159,12 +157,12 @@ def capture(savepath=None):
     """
     global d
     try:
-        return d.screenshot(savepath)
+        return d.screenshot(savepath, format='opencv')
     except requests.exceptions.ConnectionError:
         l.info("ConnectionError, try again in 5 sec")
         wait(5)
         connect()
-        return capture(savepath)
+        return capture(savepath, format='opencv')
 
 
 def wait(sec):
@@ -177,8 +175,10 @@ def touch(x, y):
     d.click(x, y)
 
 
+'''
 def pilToCv2(pilImg):
     return cv2.cvtColor(numpy.array(pilImg), cv2.COLOR_RGB2BGR)
+'''
 
 
 if __name__ == '__main__':
