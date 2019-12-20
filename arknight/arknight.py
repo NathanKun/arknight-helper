@@ -23,11 +23,18 @@ Created on 2018年9月28日
 
 
 def main():
+    refillMax = input('Refill interllect for how much time?')
+    refillCount = 0
     # check in mission selection interface
     h.waitUntilSelectMission()
     while True:
         h.touchStartMissionA()
         if h.waitSelectTeamOrRefillIntellect() == 'intellect':
+            if refillCount == refillMax:
+                print('Refill max reached')
+                break
+            refillCount = refillCount + 1
+            print('Refilled ' + str(refillCount) + ' times')
             h.touchRefillIntellect()
             h.wait(1)
             h.touchRefillIntellectConfirm()
