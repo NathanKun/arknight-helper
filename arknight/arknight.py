@@ -38,7 +38,7 @@ def main():
             h.touchRefillIntellect()
             h.wait(1)
             h.touchRefillIntellectConfirm()
-            h.wait(3)
+            h.wait(6)
         else:
             h.touchStartMissionB()
             h.waitFightStart()
