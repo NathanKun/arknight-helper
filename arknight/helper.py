@@ -118,6 +118,7 @@ def waitTemplate(template, log, delay=0.5, precition=0.925, template2=None, temp
         # template1
         res = cv2.matchTemplate(imgCapt, template, cv2.TM_CCOEFF_NORMED)
         if cv2.minMaxLoc(res)[1] > precition:  # check again
+            wait(delay)
             imgCapt = capture()
             res = cv2.matchTemplate(imgCapt, template, cv2.TM_CCOEFF_NORMED)
             if cv2.minMaxLoc(res)[1] > precition:
@@ -128,6 +129,7 @@ def waitTemplate(template, log, delay=0.5, precition=0.925, template2=None, temp
         if template2 is not None:
             res = cv2.matchTemplate(imgCapt, template2, cv2.TM_CCOEFF_NORMED)
             if cv2.minMaxLoc(res)[1] > precition:  # check again
+                wait(delay)
                 imgCapt = capture()
                 res = cv2.matchTemplate(imgCapt, template2, cv2.TM_CCOEFF_NORMED)
                 if cv2.minMaxLoc(res)[1] > precition:
