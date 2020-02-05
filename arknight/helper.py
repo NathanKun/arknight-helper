@@ -43,7 +43,7 @@ startMissionB_x = 2360
 startMissionB_y = 1020
 
 refillIntellect_x = 2430
-refillIntellect_y = 160
+refillIntellect_y = 200
 
 refillIntellectConfirm_x = 2340
 refillIntellectConfirm_y = 1160

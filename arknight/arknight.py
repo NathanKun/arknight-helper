@@ -35,11 +35,11 @@ def main():
                 break
             refillCount = refillCount + 1
             print('Refilled ' + str(refillCount) + ' times')
-            h.wait(3)
+            h.wait(1)
             h.touchRefillIntellect()
             h.wait(1)
             h.touchRefillIntellectConfirm()
-            h.wait(4)
+            h.wait(3)
         else:
             h.touchStartMissionB()
             h.waitFightStart()
