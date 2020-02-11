@@ -161,7 +161,7 @@ def capture(savepath=None):
         l.info("ConnectionError, try again in 5 sec")
         wait(5)
         connect()
-        return capture(savepath, format='opencv')
+        return capture(savepath)
 
 
 def wait(sec):
